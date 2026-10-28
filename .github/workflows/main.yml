@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run AutoCoder action
-        uses: ./
+        uses: AnielloPiscopo/AutoCoder@main
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPOSITORY: ${{ github.repository }}
