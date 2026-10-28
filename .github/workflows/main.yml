@@ -6,7 +6,6 @@ on:
 
 jobs:
   generate_code:
-    if: contains(github.event.issue.labels.*.name, 'autocoder-bot')
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -17,33 +16,12 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Make script executable
-        run: chmod +x ./scripts/script.sh
-
-      - name: Generate Code with ChatGPT
-        id: generate_code
-        env:
+      - name: Run AutoCoder action
+        uses: ./
+        with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPOSITORY: ${{ github.repository }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        run: ./scripts/script.sh "$GITHUB_TOKEN" "$REPOSITORY" "$ISSUE_NUMBER" "$OPENAI_API_KEY"
-
-      - name: Commit generated code
-        run: |
-          git config --local user.name "autocoder-bot"
-          git config --local user.email "actions@github.com"
-          git add autocoder-bot/
-          git commit -m "Add code generated for issue #${{ github.event.issue.number }}"
-
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v7
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          author: autocoder-bot <actions@github.com>
-          committer: autocoder-bot <actions@github.com>
-          branch: autocoder-branch-${{ github.event.issue.number }}
-          base: main
-          labels: autocoder-bot
-          title: "AutoCoder: code for issue #${{ github.event.issue.number }}"
-          body: "Code generated automatically from issue #${{ github.event.issue.number }}."
+          SCRIPT_PATH: 'scripts/script.sh'
+          LABEL: 'autocoder-bot'
