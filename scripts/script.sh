@@ -13,12 +13,10 @@ fetch_issue_details() {
 }
 
 send_prompt_to_chatgpt() {
-curl -s -i -L -X POST "https://models.github.ai/inference/chat/completions" \
-    -H "Accept: application/vnd.github+json" \
-    -H "X-GitHub-Api-Version: 2022-11-28" \
-    -H "Authorization: Bearer $GITHUB_TOKEN" \
+curl -s -X POST "https://api.groq.com/openai/v1/chat/completions" \
+    -H "Authorization: Bearer $OPENAI_API_KEY" \
     -H "Content-Type: application/json" \
-    -d "{\"model\": \"openai/gpt-4o-mini\", \"messages\": $MESSAGES_JSON, \"max_tokens\": 2000}"
+    -d "{\"model\": \"openai/gpt-oss-20b\", \"messages\": $MESSAGES_JSON, \"max_tokens\": 4000, \"response_format\": {\"type\": \"json_object\"}}"
 }
 
 save_to_file() {
