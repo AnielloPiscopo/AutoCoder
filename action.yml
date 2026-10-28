@@ -36,6 +36,9 @@ outputs:
 runs:
   using: 'composite'
   steps:
+    - name: Checkout Code
+      if: contains(github.event.issue.labels.*.name, inputs.LABEL)
+      uses: actions/checkout@v4
     - name: Make script executable
       if: contains(github.event.issue.labels.*.name, inputs.LABEL)
       shell: bash
