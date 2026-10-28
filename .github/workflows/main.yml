@@ -8,6 +8,10 @@ jobs:
   generate_code:
     if: contains(github.event.issue.labels.*.name, 'autocoder-bot')
     runs-on: ubuntu-latest
+    permissions:
+      models: read
+      contents: read
+      issues: read
 
     steps:
       - name: Checkout Code
