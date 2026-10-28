@@ -13,10 +13,12 @@ fetch_issue_details() {
 }
 
 send_prompt_to_chatgpt() {
-curl -s -X POST "https://models.github.ai/inference/chat/completions" \
+curl -s -L -X POST "https://models.github.ai/inference/chat/completions" \
+    -H "Accept: application/vnd.github+json" \
+    -H "X-GitHub-Api-Version: 2022-11-28" \
     -H "Authorization: Bearer $GITHUB_TOKEN" \
     -H "Content-Type: application/json" \
-    -d "{\"model\": \"openai/gpt-4o-mini\", \"messages\": $MESSAGES_JSON, \"max_tokens\": 2000, \"response_format\": {\"type\": \"json_object\"}}"
+    -d "{\"model\": \"openai/gpt-4o-mini\", \"messages\": $MESSAGES_JSON, \"max_tokens\": 2000}"
 }
 
 save_to_file() {
