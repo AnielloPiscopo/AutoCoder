@@ -1,4 +1,4 @@
-name: 'AutoCoder Bot'
+name: 'AutoCoder'
 description: 'Generates code from GitHub issues using ChatGPT and opens a pull request with the generated code for review.'
 author: 'AnielloPiscopo'
 
