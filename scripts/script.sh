@@ -13,7 +13,7 @@ fetch_issue_details() {
 }
 
 send_prompt_to_chatgpt() {
-curl -s -L -X POST "https://models.github.ai/inference/chat/completions" \
+curl -s -i -L -X POST "https://models.github.ai/inference/chat/completions" \
     -H "Accept: application/vnd.github+json" \
     -H "X-GitHub-Api-Version: 2022-11-28" \
     -H "Authorization: Bearer $GITHUB_TOKEN" \
