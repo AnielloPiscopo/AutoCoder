@@ -39,6 +39,7 @@ runs:
     - name: Checkout Code
       if: contains(github.event.issue.labels.*.name, inputs.LABEL)
       uses: actions/checkout@v4
+
     - name: Make script executable
       if: contains(github.event.issue.labels.*.name, inputs.LABEL)
       shell: bash
@@ -54,12 +55,17 @@ runs:
         OPENAI_API_KEY: ${{ inputs.OPENAI_API_KEY }}
       run: '"${{ github.action_path }}/${{ inputs.SCRIPT_PATH }}" "$GITHUB_TOKEN" "$REPOSITORY" "$ISSUE_NUMBER" "$OPENAI_API_KEY"'
 
-    - name: Commit generated code
+    - name: Configure Git
       if: contains(github.event.issue.labels.*.name, inputs.LABEL)
       shell: bash
       run: |
-        git config --local user.name "autocoder-bot"
-        git config --local user.email "actions@github.com"
+        git config --global user.name "autocoder-bot"
+        git config --global user.email "actions@github.com"
+
+    - name: Commit Changes
+      if: contains(github.event.issue.labels.*.name, inputs.LABEL)
+      shell: bash
+      run: |
         git add autocoder-bot/
         git commit -m "Add code generated for issue #${{ inputs.ISSUE_NUMBER }}"
 
